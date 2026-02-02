@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { users } from './testdata/users';
+import { users } from './test-data/users';
 
 import { Cart } from './page-objects/cart';
 import { CheckoutComplete } from './page-objects/checkout-complete';

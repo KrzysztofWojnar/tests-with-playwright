@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../fixtures';
-import { users } from '../testdata/users';
-import { defaultShippingData } from '../testdata/default-shipping-data';
+import { users } from '../test-data/users';
+import { defaultShippingData } from '../test-data/default-shipping-data';
 
 const allProducts = [
   'Sauce Labs Backpack',

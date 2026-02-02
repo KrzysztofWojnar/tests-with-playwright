@@ -26,14 +26,12 @@ const validPolicies = {
 } as const;
 
 export default defineConfig({
-  testDir: './tests',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: 1,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'https://www.saucedemo.com',
     screenshot: getValidPolicyMode('screenshot', 'PW_SCREENSHOT') || 'on',
     trace: getValidPolicyMode('trace', 'PW_TRACE') || 'on-first-retry',
     video: getValidPolicyMode('video', 'PW_VIDEO') || 'off',
@@ -43,12 +41,29 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      testDir: './ui-tests',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://www.saucedemo.com',
+      },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      testDir: './ui-tests',
+      use: {
+        ...devices['Desktop Firefox'],
+        baseURL: 'https://www.saucedemo.com',
+      },
+    },
+    {
+      name: 'api-tests',
+      testDir: './api-tests',
+      use: {
+        baseURL: 'https://www.xyz.com',
+        screenshot: 'off',
+        video: 'off',
+      },
     },
   ],
 });
