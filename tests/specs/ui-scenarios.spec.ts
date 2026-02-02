@@ -22,7 +22,7 @@ test.describe('ui scenarios', () => {
     checkoutCompletePage,
   }) => {
     await test.step('Log in as a standard user', () => login(users.standard));
-    await test.step('Add all item to the cart', async () => {
+    await test.step('Add all items to the cart', async () => {
       await expect(inventoryPage.navigation.heading).toBeVisible();
       for (const productName of allProducts) {
         await inventoryPage.addToCart(productName);
@@ -43,7 +43,7 @@ test.describe('ui scenarios', () => {
     const removedElement =
       await test.step('Find third item and remove it from the cart', async () => {
         const elementToRemove = allProducts[2];
-        await cartPage.removeItem(allProducts[2]);
+        await cartPage.removeItem(elementToRemove);
         return elementToRemove;
       });
     const updatedProducts = allProducts.toSpliced(2, 1);
@@ -76,7 +76,7 @@ test.describe('ui scenarios', () => {
       await expect(checkoutCompletePage.navigation.heading).toBeVisible();
     });
 
-    await test.step(' Validate that the website confirms the order', async () => {
+    await test.step('Validate that the website confirms the order', async () => {
       await expect(checkoutCompletePage.successHeader).toBeVisible();
       await expect(checkoutCompletePage.successMessage).toBeVisible();
     });
@@ -89,7 +89,6 @@ test.describe('ui scenarios', () => {
     inventoryItemPage,
   }) => {
     await test.step('Log in as a problem user', () => login(users.problem));
-
     const itemToAdd = allProducts[1];
     await test.step('Find one item by name, click on the item', async () => {
       await expect(inventoryPage.navigation.heading).toBeVisible();
@@ -98,7 +97,7 @@ test.describe('ui scenarios', () => {
     });
 
     await test.step('Add this product to the cart from item page', async () => {
-      await new Promise(res => setTimeout(res, 5000));
+      test.fail(true, 'Known bug related to the problem_user');
       await inventoryItemPage.addItem();
       await expect(inventoryItemPage.navigation.cartQtyBadge).toHaveText('1');
     });
@@ -122,7 +121,7 @@ test.describe('ui scenarios', () => {
       await inventoryPage.selectSorting('Name (A to Z)');
     });
     await test.step('Validate that items sorted as expected', async () => {
-      const sorted = allProducts.toSorted(); // redundant as the elements are actually sorted. Kept for readibility
+      const sorted = [...allProducts].toSorted(); // redundant as the elements are actually sorted. Kept for readibility
       const actualProductsOrder =
         await inventoryPage.productComponent.productName.allInnerTexts();
       expect(actualProductsOrder).toEqual(sorted);

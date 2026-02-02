@@ -65,7 +65,9 @@ function getValidPolicyMode<T extends keyof typeof validPolicies>(
 ): PolicyTypes[T] | undefined {
   const value = process.env[envKey];
   if (!value) return;
-  if (validPolicies[policySubject].includes(value as any)) {
+
+  const allowedValues = validPolicies[policySubject] as PolicyTypes[T][];
+  if (allowedValues.includes(value as PolicyTypes[T])) {
     return value as PolicyTypes[T];
   }
   throw new Error(`"${value}" value is not valid for ${policySubject} policy!`);

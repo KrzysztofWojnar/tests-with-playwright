@@ -15,7 +15,9 @@ export class ShippingInformations extends BasePage {
   readonly postalCodeInput = this.page.getByRole('textbox', {
     name: 'Zip/Postal Code',
   });
-  readonly continueButton = this.page.getByRole('button', { name: 'Continue' });
+  readonly continueButton = this.page.getByRole('button', {
+    name: 'Continue',
+  });
 
   async fillShippingInformations(shippingData: {
     firstName: string;
