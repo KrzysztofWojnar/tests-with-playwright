@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { users } from './test-data/users';
+import { USERS } from './test-data/users';
 
 import { Cart } from './page-objects/cart';
 import { CheckoutComplete } from './page-objects/checkout-complete';
@@ -19,7 +19,7 @@ interface PageFixtures {
   shippingInformationsPage: ShippingInformations;
 }
 
-type UserData = (typeof users)[keyof typeof users];
+type UserData = (typeof USERS)[keyof typeof USERS];
 interface UtilFixtures {
   login: (userData: UserData) => Promise<void>;
 }

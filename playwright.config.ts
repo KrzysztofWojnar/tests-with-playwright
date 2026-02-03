@@ -7,7 +7,7 @@ import {
 } from '@playwright/test';
 import 'dotenv/config';
 
-const validPolicies = {
+const VALID_POLICIES = {
   screenshot: [
     'off',
     'on',
@@ -30,7 +30,7 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: 1,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [['list'], ['html']],
   use: {
     screenshot: getValidPolicyMode('screenshot', 'PW_SCREENSHOT') || 'on',
     trace: getValidPolicyMode('trace', 'PW_TRACE') || 'on-first-retry',
@@ -74,14 +74,14 @@ interface PolicyTypes {
   video: VideoMode;
 }
 
-function getValidPolicyMode<T extends keyof typeof validPolicies>(
+function getValidPolicyMode<T extends keyof typeof VALID_POLICIES>(
   policySubject: T,
   envKey: string
 ): PolicyTypes[T] | undefined {
   const value = process.env[envKey];
   if (!value) return;
 
-  const allowedValues = validPolicies[policySubject] as PolicyTypes[T][];
+  const allowedValues = VALID_POLICIES[policySubject] as PolicyTypes[T][];
   if (allowedValues.includes(value as PolicyTypes[T])) {
     return value as PolicyTypes[T];
   }

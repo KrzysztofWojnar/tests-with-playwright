@@ -5,6 +5,7 @@ export const Product = z.object({
   title: z.string(),
   description: z.string(),
   price: z.number(),
+  brand: z.optional(z.string()),
 });
 
 export const Products = z.object({

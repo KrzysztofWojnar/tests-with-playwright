@@ -1,4 +1,4 @@
-export const defaultShippingData = {
+export const DEFAULT_SHIPPING_DATA = {
   firstName: 'Francesco',
   lastName: 'Armata',
   postalCode: 'true',

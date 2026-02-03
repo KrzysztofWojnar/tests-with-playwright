@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
 import { test } from '../fixtures';
-import { users } from '../test-data/users';
-import { defaultShippingData } from '../test-data/default-shipping-data';
+import { USERS } from '../test-data/users';
+import { DEFAULT_SHIPPING_DATA } from '../test-data/default-shipping-data';
 
-const allProducts = [
+const ALL_PRODUCTS = [
   'Sauce Labs Backpack',
   'Sauce Labs Bike Light',
   'Sauce Labs Bolt T-Shirt',
@@ -21,17 +21,17 @@ test.describe('ui scenarios', () => {
     checkoutOverviewPage,
     checkoutCompletePage,
   }) => {
-    await test.step('Log in as a standard user', () => login(users.standard));
+    await test.step('Log in as a standard user', () => login(USERS.standard));
     await test.step('Add all items to the cart', async () => {
       await expect(inventoryPage.navigation.heading).toBeVisible();
-      for (const productName of allProducts) {
+      for (const productName of ALL_PRODUCTS) {
         await inventoryPage.addToCart(productName);
       }
       await expect(cartPage.navigation.cartQtyBadge).toHaveText(
-        String(allProducts.length)
+        String(ALL_PRODUCTS.length)
       );
       await expect(inventoryPage.removeFromCartButton).toHaveCount(
-        allProducts.length
+        ALL_PRODUCTS.length
       );
     });
 
@@ -42,11 +42,11 @@ test.describe('ui scenarios', () => {
 
     const removedElement =
       await test.step('Find third item and remove it from the cart', async () => {
-        const elementToRemove = allProducts[2];
+        const elementToRemove = ALL_PRODUCTS[2];
         await cartPage.removeItem(elementToRemove);
         return elementToRemove;
       });
-    const updatedProducts = allProducts.toSpliced(2, 1);
+    const updatedProducts = ALL_PRODUCTS.toSpliced(2, 1);
 
     await test.step('Validate in the Checkout Overview that it only contains the items that you want to purchase, as well as the total count of items', async () => {
       await expect(cartPage.navigation.cartQtyBadge).toHaveText(
@@ -55,7 +55,7 @@ test.describe('ui scenarios', () => {
       await cartPage.goToCheckout();
       await expect(shippingInformationsPage.navigation.heading).toBeVisible();
       await shippingInformationsPage.fillShippingInformations(
-        defaultShippingData
+        DEFAULT_SHIPPING_DATA
       );
       await shippingInformationsPage.clickContinue();
       await Promise.all(
@@ -88,8 +88,8 @@ test.describe('ui scenarios', () => {
     inventoryPage,
     inventoryItemPage,
   }) => {
-    await test.step('Log in as a problem user', () => login(users.problem));
-    const itemToAdd = allProducts[1];
+    await test.step('Log in as a problem user', () => login(USERS.problem));
+    const itemToAdd = ALL_PRODUCTS[1];
     await test.step('Find one item by name, click on the item', async () => {
       await expect(inventoryPage.navigation.heading).toBeVisible();
       await inventoryPage.goToProductDetails(itemToAdd);
@@ -114,21 +114,21 @@ test.describe('ui scenarios', () => {
     });
   });
   test('sorting', async ({ login, inventoryPage }) => {
-    await test.step('Log in as a standard user', () => login(users.standard));
+    await test.step('Log in as a standard user', () => login(USERS.standard));
     await test.step('Sort products by name', async () => {
       await expect(inventoryPage.navigation.heading).toBeVisible();
       await inventoryPage.selectSorting('Price (low to high)'); // sorting by name is the default option, so let's change the sorting rules first
       await inventoryPage.selectSorting('Name (A to Z)');
     });
     await test.step('Validate that items sorted as expected', async () => {
-      const sorted = [...allProducts].toSorted(); // redundant as the elements are actually sorted. Kept for readibility
+      const sorted = [...ALL_PRODUCTS].toSorted(); // redundant as the elements are actually sorted. Kept for readibility
       const actualProductsOrder =
         await inventoryPage.productComponent.productName.allInnerTexts();
       expect(actualProductsOrder).toEqual(sorted);
     });
   });
   test('locked user', async ({ login, loginPage }) => {
-    await test.step('Log in as a locked user', () => login(users.locked));
+    await test.step('Log in as a locked user', () => login(USERS.locked));
     await test.step('Validate that login failed ', () =>
       expect(loginPage.lockedUserAlert).toBeVisible());
   });
