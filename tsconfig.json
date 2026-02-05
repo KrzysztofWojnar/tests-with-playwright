@@ -4,10 +4,38 @@
         "lib": ["ES2023"],
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
+        "outDir": "dist",
+        "rootDir": ".",
         "strict": true,
         "sourceMap": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
+
+        // "allowJs": true,
+        "resolveJsonModule": true,
+        "types": ["codeceptjs", "node"],
     },
+    "include": [
+        "**/*.ts",
+        "**/*.js",
+        "features/**/*.feature"
+    ],
+    "exclude": [
+        "node_modules",
+        "output",
+        "dist"
+    ]
 }
+
+
+// "module": "commonjs",
+//     "outDir": "dist",
+//     "rootDir": ".",
+//     "strict": false,
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "skipLibCheck": true,
+//     "allowJs": true,
+//     "resolveJsonModule": true,
+//     "types": ["codeceptjs"]

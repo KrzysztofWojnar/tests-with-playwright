@@ -1,34 +1,105 @@
-# Unnamed testing project
+# E2E Testing with CodeceptJS + Gherkin
 
-This repository contains only tests, utilizing Playwright for robust, cross-browser testing and API validation.
+This project contains end-to-end tests using CodeceptJS with Gherkin, Playwright for UI testing and REST helper for API testing.
 
-## 🚀 Getting Started
+## Setup
 
-Follow these steps to set up the environment and run the tests locally.
-1. First, install the necessary Node.js dependencies:
-    ```
-    npm install
-    ```
+### Prerequisites
 
-2. Install the specific browser binaries required for the tests (Chromium and Firefox in our case):
-    ```
-    npx playwright install chromium firefox
-    ```
-## 🧪 You can run the all tests or target specific browsers and environments using the scripts below.
+- Node.js 24 (possibly any node 18+) 
+- npm (or yarn)
 
-| Command                 | description    |
-| :---------------------- |:---------------|
-| `npm run e2e`           | Runs all the tests. UI tests run against chromium AND firefox |
-| `npm run e2e:chromium`  | Runs only UI tests against chromium |
-| `npm run e2e:firefox`   | Runs only UI tests against firefox  |
-| `npm run e2e:api-tests` | Runs only REST API tests            |
-| `npm run e2e:trace-all` | Runs only UI tests against chromium and keeps all the playwright trace data |
+### Installation
 
-## 📊 Reports and Debugging
-  -  "Line" Report: The testing progress should be displayed in the console.
+```bash
+npm install
+```
 
-  -  HTML Report: After a test run, Playwright typically generates a report. You can usually view it by running `npx playwright show-report`.
-  
-  - Trace Viewer: If a test fails, check the test-results folder for trace   files to debug the execution flow.
+## Building and Running Tests
 
-  - Custom files: One of the tests creates an output. It should be generated in `test-results` directory
+### Quick Start
+
+Run the preparation script to build and setup everything:
+
+```bash
+bash scripts/prepare-e2e.sh
+```
+
+This will:
+1. Compile TypeScript (`npm run build`)
+2. Copy feature files to dist directory
+3. Prepare the environment for test execution
+
+### Running Tests
+
+After preparation, run tests from the root directory:
+
+```bash
+# Run all tests
+npx codeceptjs run --config dist/codecept.conf.js
+
+# Run only REST API tests
+npx codeceptjs run --config dist/codecept.conf.js --grep "REST API"
+
+# Run only UI tests (SauceDemo)
+npx codeceptjs run --config dist/codecept.conf.js --grep "Saucedemo"
+
+# Run with debug output
+npx codeceptjs run --config dist/codecept.conf.js --debug
+
+# Run in headless mode
+HEADLESS=true npx codeceptjs run --config dist/codecept.conf.js
+
+# Interactive interactive mode (watch tests)
+npx codeceptjs run --config dist/codecept.conf.js --watch
+```
+
+### Environment Variables
+
+- `HEADLESS=true` - Run browser tests in headless mode (default: false)
+
+## Output
+
+Test results and artifacts are stored in:
+
+```
+./dist/output/         # Screenshots and test reports
+./dist/output/*.png    # Failed test screenshots
+./playwright-report/   # Detailed Playwright reports
+```
+
+## Troubleshooting
+
+### "Module not found" errors
+
+Ensure you've run the prepare script:
+```bash
+bash scripts/prepare-e2e.sh
+```
+
+### Features not found
+
+Verify feature files are copied to dist:
+```bash
+ls dist/features/
+```
+
+If missing, copy manually:
+```bash
+cp -r features dist/
+```
+
+### TypeScript compilation errors
+
+Check that all required types are installed:
+```bash
+npm install
+```
+
+### REST helper methods not recognized
+
+REST methods are dynamically injected by CodeceptJS. Ensure the REST helper is enabled in `codecept.conf.ts`.
+
+## Notes
+
+- All timestamps are in milliseconds (ms)

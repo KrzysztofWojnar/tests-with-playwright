@@ -4,15 +4,18 @@ import ts from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
 
 export default defineConfig([
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 2023,
+      globals: {
+        ...globals.node,
+      },
     },
     plugins: {
       '@typescript-eslint': ts,
