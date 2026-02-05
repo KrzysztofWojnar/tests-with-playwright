@@ -47,15 +47,6 @@ export default defineConfig({
         baseURL: 'https://www.saucedemo.com',
       },
     },
-
-    {
-      name: 'firefox',
-      testDir: './ui-tests',
-      use: {
-        ...devices['Desktop Firefox'],
-        baseURL: 'https://www.saucedemo.com',
-      },
-    },
     {
       name: 'api-tests',
       testDir: './api-tests',

@@ -18,9 +18,8 @@ Follow these steps to set up the environment and run the tests locally.
 
 | Command                 | description    |
 | :---------------------- |:---------------|
-| `npm run e2e`           | Runs all the tests. UI tests run against chromium AND firefox |
+| `npm run e2e`           | Runs all the tests. UI tests run against chromium |
 | `npm run e2e:chromium`  | Runs only UI tests against chromium |
-| `npm run e2e:firefox`   | Runs only UI tests against firefox  |
 | `npm run e2e:api-tests` | Runs only REST API tests            |
 | `npm run e2e:trace-all` | Runs only UI tests against chromium and keeps all the playwright trace data |
 
